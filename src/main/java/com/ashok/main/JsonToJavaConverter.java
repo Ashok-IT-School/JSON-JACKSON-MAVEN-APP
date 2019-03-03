@@ -3,6 +3,7 @@ package com.ashok.main;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
@@ -29,11 +30,20 @@ public class JsonToJavaConverter {
 		// Setting date format
 		mapper.setDateFormat(new SimpleDateFormat("dd-MMM-yyyy"));
 
-		// converting json file data to java obj
-		PersonInfo pinfo = mapper.readValue(jsonFile, PersonInfo.class);
+		// converting json file data to java objects (array)
+		PersonInfo[] personsArr = mapper.readValue(jsonFile, PersonInfo[].class);
+		for (PersonInfo pinfo : personsArr) {
+			System.out.println(pinfo);
+		}
 
-		// printing java object content on console
-		System.out.println(pinfo);
+		System.out.println("=====================================================");
+
+		// Reading json file data into java collection objects
+		List<PersonInfo> personInfoObjs = mapper.readValue(jsonFile,
+				mapper.getTypeFactory().constructCollectionType(List.class, PersonInfo.class));
+		for (PersonInfo pinfo : personInfoObjs) {
+			System.out.println(pinfo);
+		}
 
 	}
 
